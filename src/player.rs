@@ -10,21 +10,24 @@ pub fn create_player(pos: &Position) -> Entity {
 }
 
 
-pub fn handle_input(input: i32, player: &mut Entity) {
-  
+pub fn handle_input(input: i32, player: &mut Entity) -> Position {
+  let mut new_player_pos = Position{y: player.pos.y, x: player.pos.x};
+
   match std::char::from_u32(input as u32) {
     Some('k') => {
-      player.pos.y = player.pos.y - 1
+      new_player_pos.y = new_player_pos.y - 1
     },
     Some('j') => {
-      player.pos.y = player.pos.y + 1
+      new_player_pos.y = new_player_pos.y + 1
     },
     Some('h') => {
-      player.pos.x = player.pos.x - 1
+      new_player_pos.x = new_player_pos.x - 1
     },
     Some('l') => {
-      player.pos.x = player.pos.x + 1
+      new_player_pos.x = new_player_pos.x + 1
     },
     _ => println!("not valid direction")
   }
+
+  new_player_pos
 }

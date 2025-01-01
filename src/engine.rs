@@ -10,6 +10,7 @@ use ncurses::endwin;
 use ncurses::CURSOR_VISIBILITY;
 
 use crate::model::Entity;
+use crate::model::Position;
 use crate::map::Map;
 use crate::player::handle_input;
 
@@ -31,7 +32,8 @@ pub fn game_loop(map: &mut Map, player: &mut Entity) {
       break;
     }
 
-    handle_input(ch, player);
+    let new_player_positino = handle_input(ch, player);
+    move_player(map, player, &new_player_positino);
     draw_everything(map, player);
 
     refresh();
@@ -40,4 +42,12 @@ pub fn game_loop(map: &mut Map, player: &mut Entity) {
 
 pub fn close_game() {
   endwin();
+}
+
+fn move_player(map: &Map, player: &mut Entity, new_pos: &Position) {
+  let tiles = map.tiles();
+  if tiles[new_pos.y as usize][new_pos.x as usize].walkable {
+    player.pos.y = new_pos.y;
+    player.pos.x = new_pos.x;
+  }
 }
